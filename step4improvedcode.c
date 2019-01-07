@@ -142,25 +142,25 @@ double calculateSD(double data[])
     
     int i;
     for (int i = 0; i < BLOCK_NUM; i++) {
-        avgAlpha += _blockarragement[i];
+        avgAlpha += data[i];
     }
     mean = avgAlpha / BLOCK_NUM * LINE_NUM;
     
     for(i = 0; i < 9 ; i++){
         //for x
-        sumxyz[i] = _blockarragement[3*i] + _blockarragement[3*i+1] + _blockarragement[3*i+2];
+        sumxyz[i] = data[3*i] + data[3*i+1] + data[3*i+2];
         
     }
     for(i = 0; i < 3 ; i++){
         
         // for y
-        sumxyz[9+i] = _blockarragement[i] + _blockarragement[i+3] + _blockarragement[i+6];
-        sumxyz[9+3+i] = _blockarragement[i+9] + _blockarragement[i+12] + _blockarragement[i+15];
-        sumxyz[9+3+3+i] = _blockarragement[i+18] + _blockarragement[i+21] + _blockarragement[i+24];
+        sumxyz[9+i] = data[i] + data[i+3] + data[i+6];
+        sumxyz[9+3+i] = data[i+9] + data[i+12] + data[i+15];
+        sumxyz[9+3+3+i] = data[i+18] + data[i+21] + data[i+24];
     }
     for(i = 0; i < 9 ; i++){
         //for z
-        sumxyz[18+i] = _blockarragement[i] + _blockarragement[i+9] + _blockarragement[i+18];
+        sumxyz[18+i] = data[i] + data[i+9] + data[i+18];
     }
     
     for(i = 0; i < BLOCK_NUM; ++i)
