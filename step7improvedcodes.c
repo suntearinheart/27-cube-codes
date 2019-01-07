@@ -250,14 +250,47 @@ bool  next_loop(double * levell_p,double * levelm_p,double * levels_p){
     return false;
 }
 
-bool checkbest_arrangement(double  block[BLOCK_NUM]){
-
+bool checkbest_arrangement(double * levela_p, double * levelb_p , double * levelc_p) {
+    double  block[BLOCK_NUM];
     double  mean;
-  
+
+    block[0] = levela_p[0*3 + 0];
+    block[10] = levela_p[0*3 +1];
+    block[20] = levela_p[0*3 +2];
+    block[8] = levela_p[1*3 +0] ;
+    block[15] = levela_p[1*3 +1] ;
+    block[25]  = levela_p[1*3 +2] ;
+    block[4] = levela_p[2*3 +0];
+    block[14] = levela_p[2*3 +1] ;
+    block[21] = levela_p[2*3 +2];
+    
+    block[7] = levelb_p[0*3 +0]  ;
+    block[17] = levelb_p[0*3 +1] ;
+    block[24] = levelb_p[0*3 +2];
+    block[3] = levelb_p[1*3 +0] ;
+    block[13] = levelb_p[1*3 +1] ;
+    block[23] = levelb_p[1*3 +2]  ;
+    block[2] = levelb_p[2*3 +0] ;
+    block[9] = levelb_p[2*3 +1] ;
+    block[19] = levelb_p[2*3 +2] ;
+    
+    block[5] = levelc_p[0*3 +0];
+    block[12] = levelc_p[0*3 +1] ;
+    block[22] = levelc_p[0*3 +2];
+    block[1] = levelc_p[1*3 +0] ;
+    block[11] = levelc_p[1*3 +1] ;
+    block[18] = levelc_p[1*3 +2];
+    block[6] = levelc_p[2*3 +0] ;
+    block[16] = levelc_p[2*3 +1];
+    block[26] = levelc_p[2*3 +2] ;
+    
     mean = calculateSD(block);
   
     if(best_sd >  mean){
         best_sd =  mean;
+        memcpy(levelabest, levela_p, sizeof(double)*9);
+        memcpy(levelbbest, levelb_p, sizeof(double)*9);
+        memcpy(levelcbest, levelc_p, sizeof(double)*9);
         return true;
     }
     
@@ -271,7 +304,7 @@ void findout_thebest(){
     double levela[3][3];
     double levelb[3][3];
     double levelc[3][3];
-    double  block[BLOCK_NUM];
+
     bool levels_loop = true;
     bool levelm_loop = true;
     
@@ -329,81 +362,13 @@ void findout_thebest(){
             i++;
             levels_loop = true;
             levelm_loop = true;
-            block[0] = levela[0][0];
-            block[10] = levela[0][1];
-            block[20] = levela[0][2];
-            block[8] = levela[1][0] ;
-            block[15] = levela[1][1] ;
-            block[25]  = levela[1][2] ;
-            block[4] = levela[2][0];
-            block[14] = levela[2][1] ;
-            block[21] = levela[2][2];
-            
-            block[7] = levelb[0][0]  ;
-            block[17] = levelb[0][1] ;
-            block[24] = levelb[0][2];
-            block[3] = levelb[1][0] ;
-            block[13] = levelb[1][1] ;
-            block[23] = levelb[1][2]  ;
-            block[2] = levelb[2][0] ;
-            block[9] = levelb[2][1] ;
-            block[19] = levelb[2][2] ;
-            
-            block[5] = levelc[0][0];
-            block[12] = levelc[0][1] ;
-            block[22] = levelc[0][2];
-            block[1] = levelc[1][0] ;
-            block[11] = levelc[1][1] ;
-            block[18] = levelc[1][2];
-            block[6] = levelc[2][0] ;
-            block[16] = levelc[2][1];
-            block[26] = levelc[2][2] ;
-            
-            if( true == checkbest_arrangement(block)){
-                memcpy(levelabest, levela, sizeof(double)*9);
-                memcpy(levelbbest, levelb, sizeof(double)*9);
-                memcpy(levelcbest, levelc, sizeof(double)*9);
-            }
+            checkbest_arrangement(levelal_p,levelbl_p,levelcl_p);
         }
         
         do {
             if(!levels_loop){
                 i++;
-                block[0] = levela[0][0];
-                block[10] = levela[0][1];
-                block[20] = levela[0][2];
-                block[8] = levela[1][0] ;
-                block[15] = levela[1][1] ;
-                block[25]  = levela[1][2] ;
-                block[4] = levela[2][0];
-                block[14] = levela[2][1] ;
-                block[21] = levela[2][2];
-                
-                block[7] = levelb[0][0]  ;
-                block[17] = levelb[0][1] ;
-                block[24] = levelb[0][2];
-                block[3] = levelb[1][0] ;
-                block[13] = levelb[1][1] ;
-                block[23] = levelb[1][2]  ;
-                block[2] = levelb[2][0] ;
-                block[9] = levelb[2][1] ;
-                block[19] = levelb[2][2] ;
-                
-                block[5] = levelc[0][0];
-                block[12] = levelc[0][1] ;
-                block[22] = levelc[0][2];
-                block[1] = levelc[1][0] ;
-                block[11] = levelc[1][1] ;
-                block[18] = levelc[1][2];
-                block[6] = levelc[2][0] ;
-                block[16] = levelc[2][1];
-                block[26] = levelc[2][2] ;
-                
-                if( true == checkbest_arrangement(block)){
-                    memcpy(levelabest, levela, sizeof(double)*9);
-                    memcpy(levelbbest, levelb, sizeof(double)*9);
-                    memcpy(levelcbest, levelc, sizeof(double)*9);
-                }
+                checkbest_arrangement(levelal_p,levelbl_p,levelcl_p);
 
                 levels_loop = true;
             }
@@ -412,41 +377,7 @@ void findout_thebest(){
             {
           
                 i++;
-                block[0] = levela[0][0];
-                block[10] = levela[0][1];
-                block[20] = levela[0][2];
-                block[8] = levela[1][0] ;
-                block[15] = levela[1][1] ;
-                block[25]  = levela[1][2] ;
-                block[4] = levela[2][0];
-                block[14] = levela[2][1] ;
-                block[21] = levela[2][2];
-                
-                block[7] = levelb[0][0]  ;
-                block[17] = levelb[0][1] ;
-                block[24] = levelb[0][2];
-                block[3] = levelb[1][0] ;
-                block[13] = levelb[1][1] ;
-                block[23] = levelb[1][2]  ;
-                block[2] = levelb[2][0] ;
-                block[9] = levelb[2][1] ;
-                block[19] = levelb[2][2] ;
-                
-                block[5] = levelc[0][0];
-                block[12] = levelc[0][1] ;
-                block[22] = levelc[0][2];
-                block[1] = levelc[1][0] ;
-                block[11] = levelc[1][1] ;
-                block[18] = levelc[1][2];
-                block[6] = levelc[2][0] ;
-                block[16] = levelc[2][1];
-                block[26] = levelc[2][2] ;
-                
-                if( true == checkbest_arrangement(block)){
-                    memcpy(levelabest, levela, sizeof(double)*9);
-                    memcpy(levelbbest, levelb, sizeof(double)*9);
-                    memcpy(levelcbest, levelc, sizeof(double)*9);
-                }
+                checkbest_arrangement(levelal_p,levelbl_p,levelcl_p);
             };
                 
 
