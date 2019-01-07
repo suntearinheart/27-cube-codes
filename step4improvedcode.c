@@ -5,22 +5,10 @@
 using namespace std;
 #define LINE_NUM 3
 #define BLOCK_NUM (LINE_NUM * LINE_NUM * LINE_NUM)
-enum {
-    LevelAM = 1,
-    LevelAS = 2,
-    LevelAL = 3,
-    LevelBM = 4,
-    LevelBS = 5,
-    LevelBL = 6,
-    LevelCM = 7,
-    LevelCS = 8,
-    LevelCL = 9,
-};
-#define LevelA  1
-#define LevelB  2
-#define LevelC  3
-
-#define  MaxLevel  3
+#define  LevelA   1
+#define  LevelB   2
+#define  LevelC   3
+#define  MaxLevel  LevelC
 static double _blockAlpha[BLOCK_NUM];
 static double  _blockarragement[BLOCK_NUM];
 static double levels[MaxLevel][LINE_NUM * LINE_NUM ];
@@ -28,17 +16,17 @@ static double  maxvalue;
 static double  minvalue;
 static int levelspattern[LINE_NUM][LINE_NUM][LINE_NUM] = {
     // Bottom
-    {{LevelAL,LevelCM,LevelBS},
-     {LevelBM,LevelAS,LevelCL},
-     {LevelCS,LevelBL,LevelAM}},
+    {{LevelA,LevelC,LevelB},
+        {LevelB,LevelA,LevelC},
+        {LevelC,LevelB,LevelA}},
     // Middle
-    {{LevelBS,LevelAL,LevelCM},
-     {LevelCL,LevelBM,LevelAS},
-     {LevelAM,LevelCS,LevelBL}},
+    {{LevelB,LevelA,LevelC},
+        {LevelC,LevelB,LevelA},
+        {LevelA,LevelC,LevelB}},
     // Top
-    {{LevelCM,LevelBS,LevelAL},
-     {LevelAS,LevelCL,LevelBM},
-     {LevelBL,LevelAM,LevelCS}}
+    {{LevelC,LevelB,LevelA},
+        {LevelA,LevelC,LevelB},
+        {LevelB,LevelA,LevelC}}
 };
 
 
@@ -57,7 +45,7 @@ void init1() {
             }
         }
     }
-
+    
     memcpy(_blockAlpha, alpha, sizeof(double) * BLOCK_NUM);
     maxvalue = _blockAlpha[26];
     minvalue = _blockAlpha[0];
@@ -66,7 +54,7 @@ void init1() {
 void divide_level(){
     double levelAmaxvalue  = minvalue + (maxvalue - minvalue)/3;
     double levelBmaxvalue = minvalue + 2*(maxvalue - minvalue)/3;
-
+    
     int  j =0;
     int k = 0;
     int m = 0;
@@ -82,49 +70,24 @@ void divide_level(){
 }
 
 void arrange_pattern(){
-    int asindex = 0;
-    int amindex = 3;
-    int alindex = 6;
-    int bsindex = 0;
-    int bmindex = 3;
-    int blindex = 6;
-    int csindex = 0;
-    int cmindex = 0;
-    int clindex = 0;
-    
+    int aindex = 0;
+    int bindex = 0;
+    int cindex = 0;
     
     for (int i = 0; i < LINE_NUM; i++) {
         for (int j = 0; j < LINE_NUM;j++){
             for (int k = 0; k < LINE_NUM;k++){
                 switch(levelspattern[i][j][k]){
-                    case    LevelAM:
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelA-1][amindex++];
+                    case LevelA:
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelA-1][aindex++];
                         break;
-                    case    LevelAS:
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelA-1][asindex++];
-                        break;
-                    case    LevelAL:
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelA-1][alindex++];
-                        break;
-                    case    LevelBM :
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelB-1][bmindex++];
-                        break;
-                    case   LevelBS :
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelB-1][bsindex++];
-                        break;
-                    case    LevelBL:
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelB-1][blindex++];
-                        break;
-                    case    LevelCM :
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelC-1][cmindex++];
-                        break;
-                    case     LevelCS :
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelC-1][csindex++];
-                        break;
-                    case     LevelCL :
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelC-1][clindex++];
+                    case LevelB:
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelB-1][bindex++];
                         break;
                         
+                    case LevelC:
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelC-1][cindex++];
+                        break;
                 }
                 
             }
@@ -134,7 +97,6 @@ void arrange_pattern(){
     
     
 }
-
 double calculateSD(double data[])
 {
     double avgAlpha = 0.0,mean, standardDeviation = 0.0;
@@ -143,12 +105,13 @@ double calculateSD(double data[])
         avgAlpha += _blockAlpha[i];
     }
     mean = avgAlpha / BLOCK_NUM * LINE_NUM;
-
+    
     for(i = 0; i < BLOCK_NUM; ++i)
         standardDeviation += pow(data[i] - mean, 2);
     
-    return sqrt(standardDeviation / 10);
+    return sqrt(standardDeviation / BLOCK_NUM);
 }
+
 //output
 void outResult() {
     double avgAlpha = 0;
@@ -160,7 +123,7 @@ void outResult() {
     
     
     cout <<"the arrangement of the Cube:\n";
-
+    
     cout << "---------------\n";
     for (int i = 0; i < 3; i++) {
         switch (i){
@@ -183,14 +146,11 @@ void outResult() {
             }
             cout << "\n";
         }
-
+        
     }
     cout << "---------------\n";
-    
     cout << "the SD : ";
     cout << calculateSD(_blockarragement) << "\n";
-    
-
     
 }
 
@@ -202,9 +162,8 @@ int main(int argc, const char * argv[]) {
     divide_level();
     arrange_pattern();
     cout << "\ntime consume（ticks）: " << (clock() - start) << endl;
-
+    
     outResult();
-
+    
     return 0;
 }
-
