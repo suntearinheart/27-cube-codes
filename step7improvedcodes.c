@@ -255,7 +255,7 @@ bool checkbest_arrangement(double  block[BLOCK_NUM]){
     double  mean;
   
     mean = calculateSD(block);
-    //cout << "mean"<< mean<<"\n";
+  
     if(best_sd >  mean){
         best_sd =  mean;
         return true;
@@ -274,8 +274,6 @@ void findout_thebest(){
     double  block[BLOCK_NUM];
     bool levels_loop = true;
     bool levelm_loop = true;
-    
-
     
     double * levelal_p = &levela[0][0];
     double * levelam_p = &levela[1][0];
@@ -302,22 +300,22 @@ void findout_thebest(){
     levelb[0][0] = _blockarragement[7];
     levelb[0][1] = _blockarragement[17];
     levelb[0][2] = _blockarragement[24];
-    levelb[0][0] = _blockarragement[3];
-    levelb[0][1] = _blockarragement[13];
-    levelb[0][2] = _blockarragement[23];
-    levelb[0][0] = _blockarragement[2];
-    levelb[0][1] = _blockarragement[9];
-    levelb[0][2] = _blockarragement[19];
+    levelb[1][0] = _blockarragement[3];
+    levelb[1][1] = _blockarragement[13];
+    levelb[1][2] = _blockarragement[23];
+    levelb[2][0] = _blockarragement[2];
+    levelb[2][1] = _blockarragement[9];
+    levelb[2][2] = _blockarragement[19];
     
     levelc[0][0] = _blockarragement[5];
     levelc[0][1] = _blockarragement[12];
     levelc[0][2] = _blockarragement[22];
-    levelc[0][0] = _blockarragement[1];
-    levelc[0][1] = _blockarragement[12];
-    levelc[0][2] = _blockarragement[22];
-    levelc[0][0] = _blockarragement[6];
-    levelc[0][1] = _blockarragement[16];
-    levelc[0][2] = _blockarragement[26];
+    levelc[1][0] = _blockarragement[1];
+    levelc[1][1] = _blockarragement[11];
+    levelc[1][2] = _blockarragement[18];
+    levelc[2][0] = _blockarragement[6];
+    levelc[2][1] = _blockarragement[16];
+    levelc[2][2] = _blockarragement[26];
     
     /*init the best arrangement*/
     memcpy(levelabest, levela, sizeof(double)*9);
@@ -325,7 +323,6 @@ void findout_thebest(){
     memcpy(levelcbest, levelc, sizeof(double)*9);
     
     best_sd = calculateSD(_blockarragement);
-    cout << *levelal_p;
     
     do {
         if(!levelm_loop){
@@ -345,22 +342,22 @@ void findout_thebest(){
             block[7] = levelb[0][0]  ;
             block[17] = levelb[0][1] ;
             block[24] = levelb[0][2];
-            block[3] = levelb[0][0] ;
-            block[13] = levelb[0][1] ;
-            block[23] = levelb[0][2]  ;
-            block[2] = levelb[0][0] ;
-            block[9] = levelb[0][1] ;
-            block[19] = levelb[0][2] ;
+            block[3] = levelb[1][0] ;
+            block[13] = levelb[1][1] ;
+            block[23] = levelb[1][2]  ;
+            block[2] = levelb[2][0] ;
+            block[9] = levelb[2][1] ;
+            block[19] = levelb[2][2] ;
             
             block[5] = levelc[0][0];
             block[12] = levelc[0][1] ;
             block[22] = levelc[0][2];
-            block[1] = levelc[0][0] ;
-            block[12] = levelc[0][1] ;
-            block[22] = levelc[0][2];
-            block[6] = levelc[0][0] ;
-            block[16] = levelc[0][1];
-            block[26] = levelc[0][2] ;
+            block[1] = levelc[1][0] ;
+            block[11] = levelc[1][1] ;
+            block[18] = levelc[1][2];
+            block[6] = levelc[2][0] ;
+            block[16] = levelc[2][1];
+            block[26] = levelc[2][2] ;
             
             if( true == checkbest_arrangement(block)){
                 memcpy(levelabest, levela, sizeof(double)*9);
@@ -385,22 +382,22 @@ void findout_thebest(){
                 block[7] = levelb[0][0]  ;
                 block[17] = levelb[0][1] ;
                 block[24] = levelb[0][2];
-                block[3] = levelb[0][0] ;
-                block[13] = levelb[0][1] ;
-                block[23] = levelb[0][2]  ;
-                block[2] = levelb[0][0] ;
-                block[9] = levelb[0][1] ;
-                block[19] = levelb[0][2] ;
+                block[3] = levelb[1][0] ;
+                block[13] = levelb[1][1] ;
+                block[23] = levelb[1][2]  ;
+                block[2] = levelb[2][0] ;
+                block[9] = levelb[2][1] ;
+                block[19] = levelb[2][2] ;
                 
                 block[5] = levelc[0][0];
                 block[12] = levelc[0][1] ;
                 block[22] = levelc[0][2];
-                block[1] = levelc[0][0] ;
-                block[12] = levelc[0][1] ;
-                block[22] = levelc[0][2];
-                block[6] = levelc[0][0] ;
-                block[16] = levelc[0][1];
-                block[26] = levelc[0][2] ;
+                block[1] = levelc[1][0] ;
+                block[11] = levelc[1][1] ;
+                block[18] = levelc[1][2];
+                block[6] = levelc[2][0] ;
+                block[16] = levelc[2][1];
+                block[26] = levelc[2][2] ;
                 
                 if( true == checkbest_arrangement(block)){
                     memcpy(levelabest, levela, sizeof(double)*9);
@@ -428,22 +425,22 @@ void findout_thebest(){
                 block[7] = levelb[0][0]  ;
                 block[17] = levelb[0][1] ;
                 block[24] = levelb[0][2];
-                block[3] = levelb[0][0] ;
-                block[13] = levelb[0][1] ;
-                block[23] = levelb[0][2]  ;
-                block[2] = levelb[0][0] ;
-                block[9] = levelb[0][1] ;
-                block[19] = levelb[0][2] ;
+                block[3] = levelb[1][0] ;
+                block[13] = levelb[1][1] ;
+                block[23] = levelb[1][2]  ;
+                block[2] = levelb[2][0] ;
+                block[9] = levelb[2][1] ;
+                block[19] = levelb[2][2] ;
                 
                 block[5] = levelc[0][0];
                 block[12] = levelc[0][1] ;
                 block[22] = levelc[0][2];
-                block[1] = levelc[0][0] ;
-                block[12] = levelc[0][1] ;
-                block[22] = levelc[0][2];
-                block[6] = levelc[0][0] ;
-                block[16] = levelc[0][1];
-                block[26] = levelc[0][2] ;
+                block[1] = levelc[1][0] ;
+                block[11] = levelc[1][1] ;
+                block[18] = levelc[1][2];
+                block[6] = levelc[2][0] ;
+                block[16] = levelc[2][1];
+                block[26] = levelc[2][2] ;
                 
                 if( true == checkbest_arrangement(block)){
                     memcpy(levelabest, levela, sizeof(double)*9);
@@ -470,6 +467,35 @@ void findout_thebest(){
         sort(levelbs_p,levelbs_p+3);
     } while (next_loop(levelcl_p,levelcm_p,levelcs_p) );
 
+    _blockarragement[0] = levelabest[0][0];
+    _blockarragement[10] = levelabest[0][1];
+    _blockarragement[20] = levelabest[0][2];
+    _blockarragement[8] = levelabest[1][0] ;
+    _blockarragement[15] = levelabest[1][1] ;
+    _blockarragement[25]  = levelabest[1][2] ;
+    _blockarragement[4] = levelabest[2][0];
+    _blockarragement[14] = levelabest[2][1] ;
+    _blockarragement[21] = levelabest[2][2];
+    
+    _blockarragement[7] = levelbbest[0][0]  ;
+    _blockarragement[17] = levelbbest[0][1] ;
+    _blockarragement[24] = levelbbest[0][2];
+    _blockarragement[3] = levelbbest[1][0] ;
+    _blockarragement[13] = levelbbest[1][1] ;
+    _blockarragement[23] = levelbbest[1][2]  ;
+    _blockarragement[2] = levelbbest[2][0] ;
+    _blockarragement[9] = levelbbest[2][1] ;
+    _blockarragement[19] = levelbbest[2][2] ;
+    
+    _blockarragement[5] = levelcbest[0][0];
+    _blockarragement[12] = levelcbest[0][1] ;
+    _blockarragement[22] = levelcbest[0][2];
+    _blockarragement[1] = levelcbest[1][0] ;
+    _blockarragement[11] = levelcbest[1][1] ;
+    _blockarragement[18] = levelcbest[1][2];
+    _blockarragement[6] = levelcbest[2][0] ;
+    _blockarragement[16] = levelcbest[2][1];
+    _blockarragement[26] = levelcbest[2][2] ;
     cout <<  "the total loop:" << i;
 }
 
@@ -481,7 +507,7 @@ int main(int argc, const char * argv[]) {
     arrange_pattern();
     findout_thebest();
     cout << "\ntime consume（ticks）: " << (clock() - start) << endl;
-    
+    cout << "time consume（sec）: " << (clock() - start)/CLOCKS_PER_SEC << endl;
 
     outResult();
     
