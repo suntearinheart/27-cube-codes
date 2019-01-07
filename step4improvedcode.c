@@ -5,10 +5,22 @@
 using namespace std;
 #define LINE_NUM 3
 #define BLOCK_NUM (LINE_NUM * LINE_NUM * LINE_NUM)
-#define  LevelA   1
-#define  LevelB   2
-#define  LevelC   3
-#define  MaxLevel  LevelC
+enum {
+    LevelAM = 1,
+    LevelAS = 2,
+    LevelAL = 3,
+    LevelBM = 4,
+    LevelBS = 5,
+    LevelBL = 6,
+    LevelCM = 7,
+    LevelCS = 8,
+    LevelCL = 9,
+};
+#define LevelA  1
+#define LevelB  2
+#define LevelC  3
+
+#define  MaxLevel  3
 static double _blockAlpha[BLOCK_NUM];
 static double  _blockarragement[BLOCK_NUM];
 static double levels[MaxLevel][LINE_NUM * LINE_NUM ];
@@ -16,17 +28,17 @@ static double  maxvalue;
 static double  minvalue;
 static int levelspattern[LINE_NUM][LINE_NUM][LINE_NUM] = {
     // Bottom
-    {{LevelA,LevelC,LevelB},
-        {LevelB,LevelA,LevelC},
-        {LevelC,LevelB,LevelA}},
+    {{LevelAL,LevelCM,LevelBS},
+        {LevelBM,LevelAS,LevelCL},
+        {LevelCS,LevelBL,LevelAM}},
     // Middle
-    {{LevelB,LevelA,LevelC},
-        {LevelC,LevelB,LevelA},
-        {LevelA,LevelC,LevelB}},
+    {{LevelBS,LevelAL,LevelCM},
+        {LevelCL,LevelBM,LevelAS},
+        {LevelAM,LevelCS,LevelBL}},
     // Top
-    {{LevelC,LevelB,LevelA},
-        {LevelA,LevelC,LevelB},
-        {LevelB,LevelA,LevelC}}
+    {{LevelCM,LevelBS,LevelAL},
+        {LevelAS,LevelCL,LevelBM},
+        {LevelBL,LevelAM,LevelCS}}
 };
 
 
@@ -70,24 +82,49 @@ void divide_level(){
 }
 
 void arrange_pattern(){
-    int aindex = 0;
-    int bindex = 0;
-    int cindex = 0;
+    int asindex = 0;
+    int amindex = 3;
+    int alindex = 6;
+    int bsindex = 0;
+    int bmindex = 3;
+    int blindex = 6;
+    int csindex = 0;
+    int cmindex = 3;
+    int clindex = 6;
+    
     
     for (int i = 0; i < LINE_NUM; i++) {
         for (int j = 0; j < LINE_NUM;j++){
             for (int k = 0; k < LINE_NUM;k++){
                 switch(levelspattern[i][j][k]){
-                    case LevelA:
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelA-1][aindex++];
+                    case    LevelAM:
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelA-1][amindex++];
                         break;
-                    case LevelB:
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelB-1][bindex++];
+                    case    LevelAS:
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelA-1][asindex++];
+                        break;
+                    case    LevelAL:
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelA-1][alindex++];
+                        break;
+                    case    LevelBM :
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelB-1][bmindex++];
+                        break;
+                    case   LevelBS :
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelB-1][bsindex++];
+                        break;
+                    case    LevelBL:
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelB-1][blindex++];
+                        break;
+                    case    LevelCM :
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelC-1][cmindex++];
+                        break;
+                    case     LevelCS :
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelC-1][csindex++];
+                        break;
+                    case     LevelCL :
+                        _blockarragement[i*9 + 3*j +k] = levels[LevelC-1][clindex++];
                         break;
                         
-                    case LevelC:
-                        _blockarragement[i*9 + 3*j +k] = levels[LevelC-1][cindex++];
-                        break;
                 }
                 
             }
@@ -97,21 +134,40 @@ void arrange_pattern(){
     
     
 }
+
 double calculateSD(double data[])
 {
     double avgAlpha = 0.0,mean, standardDeviation = 0.0;
+    double sumxyz[BLOCK_NUM];
+    
     int i;
     for (int i = 0; i < BLOCK_NUM; i++) {
-        avgAlpha += _blockAlpha[i];
+        avgAlpha += _blockarragement[i];
     }
     mean = avgAlpha / BLOCK_NUM * LINE_NUM;
     
+    for(i = 0; i < 9 ; i++){
+        //for x
+        sumxyz[i] = _blockarragement[3*i] + _blockarragement[3*i+1] + _blockarragement[3*i+2];
+        
+    }
+    for(i = 0; i < 3 ; i++){
+        
+        // for y
+        sumxyz[9+i] = _blockarragement[i] + _blockarragement[i+3] + _blockarragement[i+6];
+        sumxyz[9+3+i] = _blockarragement[i+9] + _blockarragement[i+12] + _blockarragement[i+15];
+        sumxyz[9+3+3+i] = _blockarragement[i+18] + _blockarragement[i+21] + _blockarragement[i+24];
+    }
+    for(i = 0; i < 9 ; i++){
+        //for z
+        sumxyz[18+i] = _blockarragement[i] + _blockarragement[i+9] + _blockarragement[i+18];
+    }
+    
     for(i = 0; i < BLOCK_NUM; ++i)
-        standardDeviation += pow(data[i] - mean, 2);
+        standardDeviation += pow(sumxyz[i] - mean, 2);
     
     return sqrt(standardDeviation / BLOCK_NUM);
 }
-
 //output
 void outResult() {
     double avgAlpha = 0;
@@ -149,8 +205,11 @@ void outResult() {
         
     }
     cout << "---------------\n";
+    
     cout << "the SD : ";
     cout << calculateSD(_blockarragement) << "\n";
+    
+    
     
 }
 
@@ -167,3 +226,4 @@ int main(int argc, const char * argv[]) {
     
     return 0;
 }
+
