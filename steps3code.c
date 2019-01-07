@@ -1,6 +1,7 @@
 #include "iostream"
 #include "algorithm"
 #include <time.h>
+#include <cmath>
 using namespace std;
 #define LINE_NUM 3
 #define BLOCK_NUM (LINE_NUM * LINE_NUM * LINE_NUM)
@@ -16,16 +17,16 @@ static double  minvalue;
 static int levelspattern[LINE_NUM][LINE_NUM][LINE_NUM] = {
     // Bottom
     {{LevelA,LevelC,LevelB},
-     {LevelB,LevelA,LevelC},
-     {LevelC,LevelB,LevelA}},
+        {LevelB,LevelA,LevelC},
+        {LevelC,LevelB,LevelA}},
     // Middle
     {{LevelB,LevelA,LevelC},
-     {LevelC,LevelB,LevelA},
-     {LevelA,LevelC,LevelB}},
+        {LevelC,LevelB,LevelA},
+        {LevelA,LevelC,LevelB}},
     // Top
     {{LevelC,LevelB,LevelA},
-     {LevelA,LevelC,LevelB},
-     {LevelB,LevelA,LevelC}}
+        {LevelA,LevelC,LevelB},
+        {LevelB,LevelA,LevelC}}
 };
 
 
@@ -44,7 +45,7 @@ void init1() {
             }
         }
     }
-
+    
     memcpy(_blockAlpha, alpha, sizeof(double) * BLOCK_NUM);
     maxvalue = _blockAlpha[26];
     minvalue = _blockAlpha[0];
@@ -53,7 +54,7 @@ void init1() {
 void divide_level(){
     double levelAmaxvalue  = minvalue + (maxvalue - minvalue)/3;
     double levelBmaxvalue = minvalue + 2*(maxvalue - minvalue)/3;
-
+    
     int  j =0;
     int k = 0;
     int m = 0;
@@ -96,6 +97,40 @@ void arrange_pattern(){
     
     
 }
+double calculateSD(double data[])
+{
+    double avgAlpha = 0.0,mean, standardDeviation = 0.0;
+    double sumxyz[BLOCK_NUM];
+    
+    int i;
+    for (int i = 0; i < BLOCK_NUM; i++) {
+        avgAlpha += _blockarragement[i];
+    }
+    mean = avgAlpha / BLOCK_NUM * LINE_NUM;
+    
+    for(i = 0; i < 9 ; i++){
+        //for x
+        sumxyz[i] = _blockarragement[3*i] + _blockarragement[3*i+1] + _blockarragement[3*i+2];
+        
+    }
+    for(i = 0; i < 3 ; i++){
+        
+        // for y
+        sumxyz[9+i] = _blockarragement[i] + _blockarragement[i+3] + _blockarragement[i+6];
+        sumxyz[9+3+i] = _blockarragement[i+9] + _blockarragement[i+12] + _blockarragement[i+15];
+        sumxyz[9+3+3+i] = _blockarragement[i+18] + _blockarragement[i+21] + _blockarragement[i+24];
+    }
+    for(i = 0; i < 9 ; i++){
+        //for z
+        sumxyz[18+i] = _blockarragement[i] + _blockarragement[i+9] + _blockarragement[i+18];
+    }
+    
+    for(i = 0; i < BLOCK_NUM; ++i)
+        standardDeviation += pow(sumxyz[i] - mean, 2);
+    
+    return sqrt(standardDeviation / BLOCK_NUM);
+}
+
 
 //output
 void outResult() {
@@ -108,7 +143,7 @@ void outResult() {
     
     
     cout <<"the arrangement of the Cube:\n";
-
+    
     cout << "---------------\n";
     for (int i = 0; i < 3; i++) {
         switch (i){
@@ -131,10 +166,11 @@ void outResult() {
             }
             cout << "\n";
         }
-
+        
     }
     cout << "---------------\n";
-
+    cout << "the SD : ";
+    cout << calculateSD(_blockarragement) << "\n";
     
 }
 
@@ -146,9 +182,8 @@ int main(int argc, const char * argv[]) {
     divide_level();
     arrange_pattern();
     cout << "\ntime consume（ticks）: " << (clock() - start) << endl;
-
+    
     outResult();
-
+    
     return 0;
 }
-
