@@ -64,6 +64,7 @@ void init1() {
 }
 
 void divide_level(){
+    /*
     double levelAmaxvalue  = minvalue + (maxvalue - minvalue)/3;
     double levelBmaxvalue = minvalue + 2*(maxvalue - minvalue)/3;
     
@@ -78,6 +79,14 @@ void divide_level(){
         } else {
             levels[2][m++] =  _blockAlpha[i];
         }
+    }
+    */
+   /* fix bug, when there are more than one cubes having same T(value),
+      the privious codes will be have bugs. Must keep every level have 9 cubes*/
+    for (int i = 0; i < BLOCK_NUM/3 ; i++) {
+        levels[0][i] = _blockAlpha[i];
+        levels[1][i] = _blockAlpha[i + 9];
+        levels[2][i] = _blockAlpha[i + 18];
     }
 }
 
